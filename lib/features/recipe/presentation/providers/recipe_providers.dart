@@ -18,3 +18,31 @@ Stream<List<Recipe>> recipes(Ref ref) {
 
   return ref.watch(recipeRepositoryProvider).watchRecipes();
 }
+
+@riverpod
+class SearchQuery extends _$SearchQuery {
+  @override
+  String build() {
+    return '';
+  }
+
+  void onChange(String query) {
+    state = query;
+  }
+}
+
+@riverpod
+Future<List<Recipe>> filteredRecipes(Ref ref) async {
+  final recipes = await ref.watch(recipesProvider.future);
+  final query = ref.watch(searchQueryProvider);
+
+  if (query.isEmpty) {
+    return recipes;
+  }
+
+  return recipes
+      .where(
+        (recipe) => recipe.title.toLowerCase().contains(query.toLowerCase()),
+      )
+      .toList();
+}
