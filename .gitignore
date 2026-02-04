@@ -120,3 +120,7 @@ app.*.symbols
 # FVM
 .fvm/flutter_sdk
 .fvm/versions
+
+# Code generation
+*.freezed.dart
+*.g.dart
