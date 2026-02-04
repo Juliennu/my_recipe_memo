@@ -38,6 +38,22 @@ class RecipeRepository {
     );
   }
 
+  Future<void> deleteAllUserRecipes() async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    final batch = _firestore.batch();
+    final snapshot = await _recipesCollection
+        .where('userId', isEqualTo: user.uid)
+        .get();
+
+    for (final doc in snapshot.docs) {
+      batch.delete(doc.reference);
+    }
+
+    await batch.commit();
+  }
+
   Stream<List<Recipe>> watchRecipes() {
     final user = _auth.currentUser;
     if (user == null) {

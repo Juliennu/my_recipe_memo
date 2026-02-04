@@ -1,4 +1,5 @@
 import 'package:my_recipe_memo/features/auth/data/auth_repository.dart';
+import 'package:my_recipe_memo/features/recipe/data/recipe_repository.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'login_controller.g.dart';
@@ -42,6 +43,26 @@ class LoginController extends _$LoginController {
       await authRepository.signOut();
     } catch (e, st) {
       state = AsyncValue.error(e, st);
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    final link = ref.keepAlive();
+    state = const AsyncLoading();
+    try {
+      // 1. レシピデータの削除
+      // Note: 本来はCloud Functionsなどでやるべきだが、簡易的にクライアントサイドで実装
+      await ref.read(recipeRepositoryProvider).deleteAllUserRecipes();
+
+      // 2. Authアカウントの削除
+      await ref.read(authRepositoryProvider).deleteAccount();
+
+      // 成功時はstateを更新しない（アカウント削除によりプロバイダーが破棄されている可能性があるため）
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+      rethrow;
+    } finally {
+      link.close();
     }
   }
 }

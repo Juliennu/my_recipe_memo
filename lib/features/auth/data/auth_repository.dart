@@ -30,6 +30,13 @@ class AuthRepository {
     await _auth.signOut();
   }
 
+  Future<void> deleteAccount() async {
+    final user = _auth.currentUser;
+    if (user != null) {
+      await user.delete();
+    }
+  }
+
   // アカウント連携（匿名 -> 永久）
   Future<UserCredential> linkWithEmailAndPassword(
     String email,

@@ -5,24 +5,31 @@ class AppSnackBar {
   AppSnackBar._();
 
   static void show(
-    BuildContext context,
+    BuildContext? context,
     String message, {
     bool isError = false,
+    ScaffoldMessengerState? messenger,
   }) {
-    ScaffoldMessenger.of(context).showSnackBar(
+    final scaffoldMessenger =
+        messenger ?? (context != null ? ScaffoldMessenger.of(context) : null);
+    if (scaffoldMessenger == null) return;
+
+    scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Text(
           message,
           style: const TextStyle(
             color: Colors.white,
             fontWeight: FontWeight.bold,
+            fontSize: 14,
           ),
           textAlign: TextAlign.center,
         ),
         backgroundColor: isError ? AppColors.alert : AppColors.text,
         behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(100)),
-        margin: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        margin: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         elevation: 0,
       ),
     );
