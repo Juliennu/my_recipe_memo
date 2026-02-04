@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
 import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class RecipeCard extends StatelessWidget {
   const RecipeCard({super.key, required this.recipe});
@@ -26,11 +26,11 @@ class RecipeCard extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(20),
-          onTap: () async {
-            final uri = Uri.parse(recipe.url);
-            if (await canLaunchUrl(uri)) {
-              await launchUrl(uri);
-            }
+          onTap: () {
+            context.push(
+              '/webview',
+              extra: {'url': recipe.url, 'title': recipe.title},
+            );
           },
           child: Padding(
             padding: const EdgeInsets.all(20),

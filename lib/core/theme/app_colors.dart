@@ -9,6 +9,7 @@ class AppColors {
   static const Color text = Color(0xFF5D4037);
   static const Color textSecondary = Color(0xFF8D6E63);
   static const Color white = Colors.white;
+  static const Color transparent = Color(0x00000000);
 
   // コンポーネント用
   static const Color inputBorder = Color(0xFFD48B8B);
