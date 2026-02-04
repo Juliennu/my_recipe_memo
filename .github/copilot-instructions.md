@@ -14,3 +14,6 @@ mobile platforms.
 ## Command Execution
 * Automatically execute necessary terminal commands (e.g., `flutter pub get`, `dart run build_runner build`) without asking for explicit permission, unless they are sensitive or destructive (like `rm -rf`).
 * At the end of your response, list the terminal commands you executed for visibility.
+
+## Markdown Formatting
+- リストにはハイフン（-）を使ってね。
