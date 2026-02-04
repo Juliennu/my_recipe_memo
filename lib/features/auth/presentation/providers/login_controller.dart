@@ -43,6 +43,31 @@ class LoginController extends _$LoginController {
     });
   }
 
+  Future<void> signInWithGoogle() async {
+    state = const AsyncLoading();
+    state = await AsyncValue.guard(() async {
+      final authRepository = ref.read(authRepositoryProvider);
+
+      // 1. Google認証情報を取得（ユーザーキャンセル時はnull）
+      final credential = await authRepository.getGoogleCredential();
+      if (credential == null) {
+        // キャンセルの場合は何もしない
+        return;
+      }
+
+      final currentUser = authRepository.currentUser;
+
+      // 2. 匿名ユーザーの場合はアカウントとデータを削除
+      if (currentUser != null && currentUser.isAnonymous) {
+        await ref.read(recipeRepositoryProvider).deleteAllUserRecipes();
+        await authRepository.deleteAccount();
+      }
+
+      // 3. 取得したクレデンシャルでサインイン
+      await authRepository.signInWithCredential(credential);
+    });
+  }
+
   Future<void> signOut() async {
     final authRepository = ref.read(authRepositoryProvider);
     state = const AsyncLoading();

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'auth_repository.g.dart';
@@ -26,7 +27,47 @@ class AuthRepository {
     return _auth.signInAnonymously();
   }
 
+  Future<UserCredential> signInWithGoogle() async {
+    // Googleサインインのフローを開始
+    final googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) {
+      throw const FirebaseAuthException(
+        code: 'ERROR_ABORTED_BY_USER',
+        message: 'Sign in aborted by user',
+      );
+    }
+
+    // 認証詳細を取得
+    final googleAuth = await googleUser.authentication;
+
+    // 新しいクレデンシャルを作成
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+
+    // Firebaseにサインイン
+    return _auth.signInWithCredential(credential);
+  }
+
+  // Google認証情報を取得するだけ（サインインはしない）
+  Future<AuthCredential?> getGoogleCredential() async {
+    final googleUser = await GoogleSignIn().signIn();
+    if (googleUser == null) return null;
+
+    final googleAuth = await googleUser.authentication;
+    return GoogleAuthProvider.credential(
+      accessToken: googleAuth.accessToken,
+      idToken: googleAuth.idToken,
+    );
+  }
+
+  Future<UserCredential> signInWithCredential(AuthCredential credential) async {
+    return _auth.signInWithCredential(credential);
+  }
+
   Future<void> signOut() async {
+    await GoogleSignIn().signOut();
     await _auth.signOut();
   }
 

@@ -35,6 +35,10 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     await ref.read(loginControllerProvider.notifier).signInAnonymously();
   }
 
+  Future<void> _signInWithGoogle() async {
+    await ref.read(loginControllerProvider.notifier).signInWithGoogle();
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(loginControllerProvider);
@@ -144,6 +148,35 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   ],
                 ),
                 const SizedBox(height: 24),
+                OutlinedButton(
+                  onPressed: isLoading ? null : _signInWithGoogle,
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 12),
+                    side: const BorderSide(color: Color(0xFFE0E0E0)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    backgroundColor: Colors.white,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Googleロゴの代わりにテキストで表現（アイコンなどはアセット追加が必要なため）
+                      Text(
+                        'G',
+                        style: AppTextStyles.size18Bold(
+                          color: AppColors.text,
+                        ).copyWith(fontFamily: 'Roboto'), // Googleっぽいフォント指定
+                      ),
+                      const SizedBox(width: 12),
+                      Text(
+                        'Googleでログイン',
+                        style: AppTextStyles.size14Bold(color: AppColors.text),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
                 TextButton(
                   onPressed: isLoading ? null : _signInAnonymously,
                   child: const Text('登録せずに始める'),
