@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/widgets/app_dialog.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/auth_providers.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/login_controller.dart';
 
@@ -62,28 +63,16 @@ class SettingsPage extends ConsumerWidget {
       leading: const Icon(Icons.logout, color: AppColors.alert),
       title: const Text('ログアウト', style: TextStyle(color: AppColors.alert)),
       onTap: () async {
-        final result = await showDialog<bool>(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('ログアウト'),
-            content: const Text('ログアウトしますか？'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context, false),
-                child: const Text('キャンセル'),
-              ),
-              TextButton(
-                onPressed: () => Navigator.pop(context, true),
-                child: const Text('ログアウト'),
-              ),
-            ],
-          ),
+        await AppDialog.show(
+          context,
+          title: 'ログアウト',
+          content: 'ログアウトしますか？',
+          confirmText: 'ログアウト',
+          isDestructive: true,
+          onConfirm: () {
+            ref.read(loginControllerProvider.notifier).signOut();
+          },
         );
-
-        if (result == true) {
-          await ref.read(loginControllerProvider.notifier).signOut();
-          // Routerのリダイレクトによりログイン画面へ遷移するため、ここでは何もしない
-        }
       },
     );
   }
