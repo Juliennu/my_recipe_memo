@@ -12,4 +12,5 @@ class AppColors {
   // コンポーネント用
   static const Color inputBorder = Color(0xFFD48B8B);
   static const Color hintText = Color(0xFFBDBDBD); // Colors.grey[400]の近似
+  static const Color alert = Color(0xFFE57373); // 注意・警告用（トーンを合わせた赤）
 }

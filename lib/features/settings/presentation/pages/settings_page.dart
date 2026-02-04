@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_recipe_memo/core/theme/app_colors.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/auth_providers.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/login_controller.dart';
 
@@ -44,10 +45,10 @@ class SettingsPage extends ConsumerWidget {
 
   Widget _buildLinkAccountTile(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.link, color: Colors.blue),
+      leading: const Icon(Icons.link, color: AppColors.primary),
       title: const Text(
         'アカウントを連携する',
-        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+        style: TextStyle(color: AppColors.primary, fontWeight: FontWeight.bold),
       ),
       subtitle: const Text('データの引き継ぎや複数端末での利用が可能になります'),
       onTap: () {
@@ -58,8 +59,8 @@ class SettingsPage extends ConsumerWidget {
 
   Widget _buildLogoutTile(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: const Icon(Icons.logout, color: Colors.red),
-      title: const Text('ログアウト', style: TextStyle(color: Colors.red)),
+      leading: const Icon(Icons.logout, color: AppColors.alert),
+      title: const Text('ログアウト', style: TextStyle(color: AppColors.alert)),
       onTap: () async {
         final result = await showDialog<bool>(
           context: context,
