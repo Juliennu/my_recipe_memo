@@ -40,7 +40,7 @@ class MyApp extends ConsumerWidget {
         ),
         scaffoldBackgroundColor: AppColors.surface,
         useMaterial3: true,
-        appBarTheme: const AppBarTheme(
+        appBarTheme: AppBarTheme(
           centerTitle: true,
           backgroundColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
@@ -70,7 +70,7 @@ class MyApp extends ConsumerWidget {
               width: 1.5,
             ),
           ),
-          hintStyle: AppTextStyles.size16Regular(color: AppColors.hintText),
+          hintStyle: AppTextStyles.size16Medium(color: AppColors.hintText),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(

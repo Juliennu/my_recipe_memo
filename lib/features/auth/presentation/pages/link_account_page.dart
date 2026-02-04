@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_recipe_memo/core/theme/app_colors.dart';
 import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 import 'package:my_recipe_memo/core/widgets/app_cancel_button.dart';
 import 'package:my_recipe_memo/core/widgets/app_primary_button.dart';
@@ -90,10 +89,7 @@ class _LinkAccountPageState extends ConsumerState<LinkAccountPage>
                           color: Colors.orange,
                         ),
                         const SizedBox(height: 16),
-                        Text(
-                          '現在のデータが失われます',
-                          style: AppTextStyles.size18Bold(),
-                        ),
+                        Text('現在のデータが失われます', style: AppTextStyles.size18Bold()),
                         const SizedBox(height: 24),
                         const Text(
                           '既存のアカウントにログインすると、現在のゲストユーザーとしてのデータは引き継がれません。\n本当にログインしますか？',

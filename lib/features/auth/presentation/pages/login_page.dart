@@ -49,7 +49,6 @@ class _LoginPageState extends ConsumerState<LoginPage> {
     });
 
     return Scaffold(
-      appBar: AppBar(title: const Text('ログイン')),
       body: Center(
         child: SingleChildScrollView(
           padding: const EdgeInsets.all(24.0),
@@ -75,7 +74,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 Text(
                   'お気に入りのレシピを、\n自分だけのメモに。',
                   style: AppTextStyles.size14Regular(
-                    color: Colors.grey[600]!,
+                    color: AppColors.textSecondary,
                     height: 1.5,
                   ),
                   textAlign: TextAlign.center,
@@ -122,7 +121,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                           width: 24,
                           height: 24,
                           child: CircularProgressIndicator(
-                            color: Colors.white,
+                            color: AppColors.white,
                             strokeWidth: 2,
                           ),
                         )
@@ -137,7 +136,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       child: Text(
                         'または',
                         style: AppTextStyles.size12Regular(
-                            color: Colors.grey[400]!),
+                          color: AppColors.hintText,
+                        ),
                       ),
                     ),
                     const Expanded(child: Divider()),

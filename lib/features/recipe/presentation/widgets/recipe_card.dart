@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_recipe_memo/core/theme/app_colors.dart';import 'package:my_recipe_memo/core/theme/app_text_styles.dart';import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
+import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
+import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
 
 class RecipeCard extends StatelessWidget {
   const RecipeCard({super.key, required this.recipe});
