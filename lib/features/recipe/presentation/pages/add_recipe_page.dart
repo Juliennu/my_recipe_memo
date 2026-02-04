@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/auth_providers.dart';
 import 'package:my_recipe_memo/features/recipe/data/recipe_repository.dart';
-import 'package:my_recipe_memo/features/recipe/domain/recipe.dart';
+import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
 
 class AddRecipePage extends ConsumerStatefulWidget {
   const AddRecipePage({super.key});

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:my_recipe_memo/features/auth/data/auth_repository.dart';
-import 'package:my_recipe_memo/features/recipe/domain/recipe.dart';
+import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'recipe_repository.g.dart';
