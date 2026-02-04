@@ -11,6 +11,7 @@ class SettingsPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final isAnonymous = ref.watch(isAnonymousUserProvider);
     final currentUid = ref.watch(currentUserIdProvider);
+    final currentEmail = ref.watch(currentUserEmailProvider);
 
     return Scaffold(
       appBar: AppBar(title: const Text('設定')),
@@ -26,54 +27,63 @@ class SettingsPage extends ConsumerWidget {
           ListTile(
             leading: const Icon(Icons.person),
             title: Text(isAnonymous ? 'ゲストユーザー' : 'アカウント連携済み'),
-            subtitle: Text('ID: ${currentUid ?? "未ログイン"}'),
+            subtitle: Text(
+              isAnonymous
+                  ? 'ID: ${currentUid ?? "未ログイン"}'
+                  : 'Email: ${currentEmail ?? "未設定"}',
+            ),
           ),
           if (isAnonymous)
-            ListTile(
-              leading: const Icon(Icons.link, color: Colors.blue),
-              title: const Text(
-                'アカウントを連携する',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              subtitle: const Text('データの引き継ぎや複数端末での利用が可能になります'),
-              onTap: () {
-                context.push('/settings/link');
-              },
-            )
+            _buildLinkAccountTile(context)
           else
-            ListTile(
-              leading: const Icon(Icons.logout, color: Colors.red),
-              title: const Text('ログアウト', style: TextStyle(color: Colors.red)),
-              onTap: () async {
-                final result = await showDialog<bool>(
-                  context: context,
-                  builder: (context) => AlertDialog(
-                    title: const Text('ログアウト'),
-                    content: const Text('ログアウトしますか？'),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, false),
-                        child: const Text('キャンセル'),
-                      ),
-                      TextButton(
-                        onPressed: () => Navigator.pop(context, true),
-                        child: const Text('ログアウト'),
-                      ),
-                    ],
-                  ),
-                );
-
-                if (result == true) {
-                  await ref.read(loginControllerProvider.notifier).signOut();
-                  // Routerのリダイレクトによりログイン画面へ遷移するため、ここでは何もしない
-                }
-              },
-            ),
+            _buildLogoutTile(context, ref),
         ],
       ),
+    );
+  }
+
+  Widget _buildLinkAccountTile(BuildContext context) {
+    return ListTile(
+      leading: const Icon(Icons.link, color: Colors.blue),
+      title: const Text(
+        'アカウントを連携する',
+        style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+      ),
+      subtitle: const Text('データの引き継ぎや複数端末での利用が可能になります'),
+      onTap: () {
+        context.push('/settings/link');
+      },
+    );
+  }
+
+  Widget _buildLogoutTile(BuildContext context, WidgetRef ref) {
+    return ListTile(
+      leading: const Icon(Icons.logout, color: Colors.red),
+      title: const Text('ログアウト', style: TextStyle(color: Colors.red)),
+      onTap: () async {
+        final result = await showDialog<bool>(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('ログアウト'),
+            content: const Text('ログアウトしますか？'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context, false),
+                child: const Text('キャンセル'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.pop(context, true),
+                child: const Text('ログアウト'),
+              ),
+            ],
+          ),
+        );
+
+        if (result == true) {
+          await ref.read(loginControllerProvider.notifier).signOut();
+          // Routerのリダイレクトによりログイン画面へ遷移するため、ここでは何もしない
+        }
+      },
     );
   }
 }

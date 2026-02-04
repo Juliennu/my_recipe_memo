@@ -15,6 +15,11 @@ String? currentUserId(Ref ref) {
 }
 
 @riverpod
+String? currentUserEmail(Ref ref) {
+  return ref.watch(authStateProvider).value?.email;
+}
+
+@riverpod
 bool isAnonymousUser(Ref ref) {
   return ref.watch(authStateProvider).value?.isAnonymous ?? false;
 }
