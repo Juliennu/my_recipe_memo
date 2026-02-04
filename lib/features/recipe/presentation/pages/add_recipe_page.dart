@@ -26,9 +26,9 @@ class _AddRecipePageState extends ConsumerState<AddRecipePage> {
   void _submit() {
     if (_formKey.currentState!.validate()) {
       // TODO: Firebaseへの保存処理
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('レシピを保存しました')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('レシピを保存しました')));
       context.pop();
     }
   }
@@ -36,9 +36,7 @@ class _AddRecipePageState extends ConsumerState<AddRecipePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('レシピ登録'),
-      ),
+      appBar: AppBar(title: const Text('レシピ登録')),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Form(

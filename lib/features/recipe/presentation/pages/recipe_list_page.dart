@@ -7,12 +7,8 @@ class RecipeListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('レシピ一覧'),
-      ),
-      body: const Center(
-        child: Text('レシピがまだありません'),
-      ),
+      appBar: AppBar(title: const Text('レシピ一覧')),
+      body: const Center(child: Text('レシピがまだありません')),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.push('/add');
