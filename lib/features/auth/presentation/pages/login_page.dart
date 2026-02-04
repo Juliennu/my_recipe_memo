@@ -119,7 +119,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 ElevatedButton(
                   onPressed: isLoading ? null : _signIn,
                   style: ElevatedButton.styleFrom(
-                    shadowColor: AppColors.primary.withOpacity(0.4),
+                    shadowColor: AppColors.primary.withValues(alpha: 0.4),
                     elevation: 8,
                   ),
                   child: isLoading

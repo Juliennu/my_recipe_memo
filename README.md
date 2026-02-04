@@ -109,4 +109,3 @@ fvm flutter run
 - **Code Generation**: [Freezed](https://pub.dev/packages/freezed), [Riverpod Generator](https://pub.dev/packages/riverpod_generator)
 - **Backend**: Firebase (Auth, Firestore)
 - **Linting**: flutter_lints, custom_lint, riverpod_lint
-
