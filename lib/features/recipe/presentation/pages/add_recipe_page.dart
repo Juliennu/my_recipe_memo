@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_recipe_memo/features/auth/presentation/providers/auth_providers.dart';
 import 'package:my_recipe_memo/features/recipe/data/recipe_repository.dart';
 import 'package:my_recipe_memo/features/recipe/domain/recipe.dart';
 
@@ -33,7 +34,13 @@ class _AddRecipePageState extends ConsumerState<AddRecipePage> {
       });
 
       try {
+        final userId = ref.read(currentUserIdProvider);
+        if (userId == null) {
+          throw Exception('ログインしていません');
+        }
+
         final recipe = Recipe(
+          userId: userId,
           title: _nameController.text,
           url: _urlController.text,
           category: _categoryController.text,

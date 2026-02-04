@@ -24,6 +24,7 @@ abstract class Recipe with _$Recipe {
 
   const factory Recipe({
     String? id,
+    required String userId,
     required String title,
     required String url,
     required String category,

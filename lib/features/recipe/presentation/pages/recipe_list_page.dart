@@ -12,7 +12,17 @@ class RecipeListPage extends ConsumerWidget {
     final recipesAsync = ref.watch(recipesProvider);
 
     return Scaffold(
-      appBar: AppBar(title: const Text('レシピ一覧')),
+      appBar: AppBar(
+        title: const Text('レシピ一覧'),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.settings),
+            onPressed: () {
+              context.push('/settings');
+            },
+          ),
+        ],
+      ),
       body: recipesAsync.when(
         data: (recipes) {
           if (recipes.isEmpty) {
@@ -39,10 +49,7 @@ class RecipeListPage extends ConsumerWidget {
             },
           );
         },
-        error:
-            (error, stack) => Center(
-              child: Text('エラーが発生しました: $error'),
-            ),
+        error: (error, stack) => Center(child: Text('エラーが発生しました: $error')),
         loading: () => const Center(child: CircularProgressIndicator()),
       ),
       floatingActionButton: FloatingActionButton(
