@@ -150,7 +150,7 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 const SizedBox(height: 24),
                 TextButton(
                   onPressed: isLoading ? null : _signInAnonymously,
-                  child: const Text('会員登録せずに始める'),
+                  child: const Text('登録せずに始める'),
                 ),
               ],
             ),

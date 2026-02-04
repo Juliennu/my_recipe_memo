@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_recipe_memo/core/widgets/app_cancel_button.dart';
+import 'package:my_recipe_memo/core/widgets/app_primary_button.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/auth_providers.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/login_controller.dart';
 
@@ -92,25 +94,21 @@ class _LinkAccountPageState extends ConsumerState<LinkAccountPage>
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 24),
                         const Text(
                           '既存のアカウントにログインすると、現在のゲストユーザーとしてのデータは引き継がれません。\n本当にログインしますか？',
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.start,
                         ),
                         const SizedBox(height: 24),
-                        FilledButton(
+                        AppPrimaryButton(
+                          text: '確認してログインする',
                           onPressed: () => Navigator.pop(context, true),
-                          style: FilledButton.styleFrom(
-                            backgroundColor: Colors.red,
-                            foregroundColor: Colors.white,
-                            fixedSize: const Size.fromWidth(double.maxFinite),
-                          ),
-                          child: const Text('確認してログインする'),
+                          isDestructive: true,
                         ),
                         const SizedBox(height: 8),
-                        TextButton(
+                        AppCancelButton(
+                          text: 'キャンセル',
                           onPressed: () => Navigator.pop(context, false),
-                          child: const Text('キャンセル'),
                         ),
                         const SizedBox(height: 16),
                       ],
@@ -227,18 +225,10 @@ class _LinkAccountPageState extends ConsumerState<LinkAccountPage>
               },
             ),
             const SizedBox(height: 32),
-            FilledButton(
-              onPressed: isLoading ? null : _submit,
-              child: isLoading
-                  ? const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(
-                        strokeWidth: 2,
-                        color: Colors.white,
-                      ),
-                    )
-                  : const Text('実行する'),
+            AppPrimaryButton(
+              text: '実行する',
+              onPressed: _submit,
+              isLoading: isLoading,
             ),
           ],
         ),
