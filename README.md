@@ -49,7 +49,34 @@
     fvm flutter pub get
     ```
 
-4. **コード生成 (build_runner)**
+4. **Firebase設定ファイルの生成**
+
+    ⚠️ **重要**: Firebase設定ファイルはセキュリティ上の理由でGitリポジトリに含まれていません。以下の手順で生成してください。
+
+    a. Firebase CLI にログイン:
+
+    ```bash
+    firebase login
+    ```
+
+    b. FlutterFire CLI をインストール (初回のみ):
+
+    ```bash
+    dart pub global activate flutterfire_cli
+    ```
+
+    c. Firebase設定ファイルを生成:
+
+    ```bash
+    dart pub global run flutterfire_cli:flutterfire configure --project=my-recipe-memo
+    ```
+
+    このコマンドで以下のファイルが生成されます:
+    - `lib/firebase_options.dart`
+    - `android/app/google-services.json`
+    - `ios/Runner/GoogleService-Info.plist`
+
+5. **コード生成 (build_runner)**
     Riverpod, Freezed, GoRouterなどのコード生成を行います。
 
     ```bash

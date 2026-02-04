@@ -1,0 +1,30 @@
+{
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "my-recipe-memo",
+                    "appId": "1:943974445175:android:cb926a346a4a0414545672",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "ios": {
+                "default": {
+                    "projectId": "my-recipe-memo",
+                    "appId": "1:943974445175:ios:7328124361e89f44545672",
+                    "uploadDebugSymbols": false,
+                    "fileOutput": "ios/Runner/GoogleService-Info.plist"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "my-recipe-memo",
+                    "configurations": {
+                        "android": "1:943974445175:android:cb926a346a4a0414545672",
+                        "ios": "1:943974445175:ios:7328124361e89f44545672"
+                    }
+                }
+            }
+        }
+    }
+}
