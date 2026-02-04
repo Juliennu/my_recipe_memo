@@ -39,6 +39,7 @@ mobile platforms.
 
 ## Flutter style guide
 * **SOLID Principles:** Apply SOLID principles throughout the codebase.
+* **Modern Standards:** Write code compatible with the latest stable Flutter SDK. Strictly avoid deprecated APIs, widgets, and properties (e.g., use `CardThemeData` instead of `CardTheme` in `ThemeData`, `PopScope` instead of `WillPopScope` where appropriate).
 * **Concise and Declarative:** Write concise, modern, technical Dart code.
   Prefer functional and declarative patterns.
 * **Composition over Inheritance:** Favor composition for building complex
@@ -80,9 +81,12 @@ mobile platforms.
   obscure is difficult to maintain.
 * **Error Handling:** Anticipate and handle potential errors. Don't let your
   code fail silently.
+* **UI Componentization:** Extract common UI patterns and elements into reusable widgets to avoid code duplication and ensure maintainability.
 * **Avoid Magic Numbers:** Use `enum`s or named constants instead of magic numbers
   or strings. Especially when managing state or conditional logic (e.g., tab indices,
   api status codes), define an `enum` to make the code self-documenting.
+* **Color Handling:** Do not hardcode colors. Define them in a centralized `AppColors`
+  class or similar configuration file to ensure consistency and maintainability.
 * **Styling:**
     * Line length: Lines should be 80 characters or fewer.
     * Use `PascalCase` for classes, `camelCase` for
@@ -93,6 +97,7 @@ mobile platforms.
   `platform` packages, if appropriate, so you can inject in-memory and fake
   versions of the objects.
 * **Logging:** Use the `logging` package instead of `print`.
+* **Warnings:** Ensure there are no resolvable warnings remaining in the code, except for `TODO` comments.
 
 ## Dart Best Practices
 * **Effective Dart:** Follow the official Effective Dart guidelines
@@ -154,11 +159,12 @@ When building reusable APIs, such as a library, follow these principles.
   View, and ViewModel/Controller roles.
 * **Logical Layers:** Organize the project into logical layers:
     * Presentation (widgets, screens)
-    * Domain (business logic classes)
-    * Data (model classes, API clients)
+    * Providers (state management, dependency injection)
+    * Models (entities, business logic classes)
+    * Data (repositories, API clients)
     * Core (shared classes, utilities, and extension types)
 * **Feature-based Organization:** For larger projects, organize code by feature,
-  where each feature has its own presentation, domain, and data subfolders. This
+  where each feature has its own presentation, providers, models, and data subfolders. This
   improves navigability and scalability.
 
 ## Lint Rules
@@ -402,6 +408,7 @@ linter:
   ```
 
 ### Assets and Images
+* **Directory Structure:** Store all static assets (images, icons, etc.) in the `assets` directory (e.g., `assets/images`, `assets/icons`).
 * **Image Guidelines:** If images are needed, make them relevant and meaningful,
   with appropriate size, layout, and licensing (e.g., freely available). Provide
   placeholder images if real ones are not available.
