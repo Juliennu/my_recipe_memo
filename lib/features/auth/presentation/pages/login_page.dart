@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:my_recipe_memo/core/theme/app_colors.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/login_controller.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -57,17 +58,39 @@ class _LoginPageState extends ConsumerState<LoginPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                const SizedBox(height: 40),
+                const Icon(
+                  Icons.restaurant_menu_rounded,
+                  size: 80,
+                  color: AppColors.primary,
+                ),
+                const SizedBox(height: 24),
                 const Text(
-                  'My Recipe Memo',
-                  style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+                  'Recipe Memo',
+                  style: TextStyle(
+                    fontSize: 28,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.text,
+                    letterSpacing: 1.5,
+                  ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 48),
+                const SizedBox(height: 8),
+                Text(
+                  'お気に入りのレシピを、\n自分だけのメモに。',
+                  style: TextStyle(
+                    fontSize: 14,
+                    color: Colors.grey[600],
+                    height: 1.5,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+                const SizedBox(height: 60),
                 TextFormField(
                   controller: _emailController,
                   decoration: const InputDecoration(
-                    labelText: 'メールアドレス',
-                    border: OutlineInputBorder(),
+                    hintText: 'メールアドレス',
+                    prefixIcon: Icon(Icons.email_outlined, size: 20),
                   ),
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
@@ -81,8 +104,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 TextFormField(
                   controller: _passwordController,
                   decoration: const InputDecoration(
-                    labelText: 'パスワード',
-                    border: OutlineInputBorder(),
+                    hintText: 'パスワード',
+                    prefixIcon: Icon(Icons.lock_outline, size: 20),
                   ),
                   obscureText: true,
                   validator: (value) {
@@ -92,22 +115,42 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
                 ElevatedButton(
                   onPressed: isLoading ? null : _signIn,
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
+                    shadowColor: AppColors.primary.withOpacity(0.4),
+                    elevation: 8,
                   ),
                   child: isLoading
-                      ? const CircularProgressIndicator()
+                      ? const SizedBox(
+                          width: 24,
+                          height: 24,
+                          child: CircularProgressIndicator(
+                            color: Colors.white,
+                            strokeWidth: 2,
+                          ),
+                        )
                       : const Text('ログイン'),
                 ),
                 const SizedBox(height: 24),
-                const Divider(),
+                Row(
+                  children: [
+                    const Expanded(child: Divider()),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      child: Text(
+                        'または',
+                        style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+                      ),
+                    ),
+                    const Expanded(child: Divider()),
+                  ],
+                ),
                 const SizedBox(height: 24),
                 TextButton(
                   onPressed: isLoading ? null : _signInAnonymously,
-                  child: const Text('登録せずに始める'),
+                  child: const Text('会員登録せずに始める'),
                 ),
               ],
             ),
