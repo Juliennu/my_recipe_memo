@@ -80,6 +80,9 @@ mobile platforms.
   obscure is difficult to maintain.
 * **Error Handling:** Anticipate and handle potential errors. Don't let your
   code fail silently.
+* **Avoid Magic Numbers:** Use `enum`s or named constants instead of magic numbers
+  or strings. Especially when managing state or conditional logic (e.g., tab indices,
+  api status codes), define an `enum` to make the code self-documenting.
 * **Styling:**
     * Line length: Lines should be 80 characters or fewer.
     * Use `PascalCase` for classes, `camelCase` for
