@@ -32,6 +32,11 @@ mobile platforms.
 * **Standard Structure:** Assumes a standard Flutter project structure with
   `lib/main.dart` as the primary application entry point.
 
+## Version Management
+* **FVM:** Use `fvm` (Flutter Version Management) to manage Flutter SDK versions.
+* **Configuration:** Commit `.fvm/fvm_config.json` to the repository to ensure all developers use the same Flutter version.
+* **Git ignore:** Ignore `.fvm/flutter_sdk` in `.gitignore` as it depends on the local environment.
+
 ## Flutter style guide
 * **SOLID Principles:** Apply SOLID principles throughout the codebase.
 * **Concise and Declarative:** Write concise, modern, technical Dart code.
