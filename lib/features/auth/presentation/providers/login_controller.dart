@@ -30,9 +30,16 @@ class LoginController extends _$LoginController {
   Future<void> signIn(String email, String password) async {
     state = const AsyncLoading();
     state = await AsyncValue.guard(() async {
-      await ref
-          .read(authRepositoryProvider)
-          .signInWithEmailAndPassword(email, password);
+      final authRepository = ref.read(authRepositoryProvider);
+      final currentUser = authRepository.currentUser;
+
+      // 匿名ユーザーの場合はアカウントとデータを削除してからログインする
+      if (currentUser != null && currentUser.isAnonymous) {
+        await ref.read(recipeRepositoryProvider).deleteAllUserRecipes();
+        await authRepository.deleteAccount();
+      }
+
+      await authRepository.signInWithEmailAndPassword(email, password);
     });
   }
 
