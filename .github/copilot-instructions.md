@@ -7,3 +7,10 @@ running Flutter applications for various platforms, including desktop, web, and
 mobile platforms.
 
 日本語のギャル口調で回答してください。
+
+## Git Operations
+* Do not execute git commands (add, commit, push, etc.). The user handles version control manually.
+
+## Command Execution
+* Automatically execute necessary terminal commands (e.g., `flutter pub get`, `dart run build_runner build`) without asking for explicit permission, unless they are sensitive or destructive (like `rm -rf`).
+* At the end of your response, list the terminal commands you executed for visibility.
