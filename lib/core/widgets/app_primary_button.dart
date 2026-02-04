@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 
 class AppPrimaryButton extends StatelessWidget {
   const AppPrimaryButton({
@@ -41,10 +42,7 @@ class AppPrimaryButton extends StatelessWidget {
               )
             : Text(
                 text,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.white,
-                ),
+                style: AppTextStyles.size14Bold(color: AppColors.white),
               ),
       ),
     );

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:my_recipe_memo/core/theme/app_colors.dart';
-import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
+import 'package:my_recipe_memo/core/theme/app_colors.dart';import 'package:my_recipe_memo/core/theme/app_text_styles.dart';import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
 
 class RecipeCard extends StatelessWidget {
   const RecipeCard({super.key, required this.recipe});
@@ -43,12 +42,7 @@ class RecipeCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         recipe.title,
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: AppColors.text,
-                          height: 1.4,
-                        ),
+                        style: AppTextStyles.size16Bold(height: 1.4),
                       ),
                     ),
                     const Icon(
@@ -70,11 +64,8 @@ class RecipeCard extends StatelessWidget {
                   ),
                   child: Text(
                     recipe.category,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.w600,
-                    ),
+                    style: AppTextStyles.size12Regular(color: AppColors.primary)
+                        .copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
               ],

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 import 'package:my_recipe_memo/core/widgets/app_cancel_button.dart';
 import 'package:my_recipe_memo/core/widgets/app_primary_button.dart';
 import 'package:my_recipe_memo/core/widgets/app_snackbar.dart';
@@ -88,12 +90,9 @@ class _LinkAccountPageState extends ConsumerState<LinkAccountPage>
                           color: Colors.orange,
                         ),
                         const SizedBox(height: 16),
-                        const Text(
+                        Text(
                           '現在のデータが失われます',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: AppTextStyles.size18Bold(),
                         ),
                         const SizedBox(height: 24),
                         const Text(
@@ -181,7 +180,7 @@ class _LinkAccountPageState extends ConsumerState<LinkAccountPage>
               currentTab == AuthTabType.linkAccount
                   ? '現在のデータを引き継いでアカウントを作成します。'
                   : '別のアカウントに切り替えます。（現在のゲストデータは失われます）',
-              style: const TextStyle(color: Colors.grey),
+              style: AppTextStyles.size14Regular(color: Colors.grey),
             ),
             const SizedBox(height: 24),
             TextFormField(

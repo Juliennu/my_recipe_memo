@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 import 'package:wakelock_plus/wakelock_plus.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -65,11 +66,7 @@ class _RecipeWebViewPageState extends State<RecipeWebViewPage> {
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: AppColors.text),
-        titleTextStyle: const TextStyle(
-          color: AppColors.text,
-          fontSize: 16,
-          fontWeight: FontWeight.bold,
-        ),
+        titleTextStyle: AppTextStyles.size16Bold(),
       ),
       body: Stack(
         children: [

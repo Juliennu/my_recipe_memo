@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 import 'package:my_recipe_memo/core/widgets/app_cancel_button.dart';
 import 'package:my_recipe_memo/core/widgets/app_primary_button.dart';
 
@@ -77,11 +78,7 @@ class AppDialog extends StatelessWidget {
   Widget _buildTitle() {
     return Text(
       title,
-      style: const TextStyle(
-        fontSize: 18,
-        fontWeight: FontWeight.bold,
-        color: AppColors.text,
-      ),
+      style: AppTextStyles.size18Bold(),
       textAlign: TextAlign.center,
     );
   }
@@ -89,8 +86,7 @@ class AppDialog extends StatelessWidget {
   Widget _buildContent() {
     return Text(
       content,
-      style: const TextStyle(
-        fontSize: 14,
+      style: AppTextStyles.size14Regular(
         color: AppColors.textSecondary,
         height: 1.5,
       ),

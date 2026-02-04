@@ -5,6 +5,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_recipe_memo/core/router/router.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 
 import 'firebase_options.dart';
 
@@ -44,13 +45,8 @@ class MyApp extends ConsumerWidget {
           backgroundColor: Colors.transparent,
           systemOverlayStyle: SystemUiOverlayStyle.dark,
           elevation: 0,
-          titleTextStyle: TextStyle(
-            color: AppColors.text,
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-            letterSpacing: 1.2,
-          ),
-          iconTheme: IconThemeData(color: AppColors.text),
+          titleTextStyle: AppTextStyles.size18Bold(),
+          iconTheme: const IconThemeData(color: AppColors.text),
         ),
         inputDecorationTheme: InputDecorationTheme(
           filled: true,
@@ -74,7 +70,7 @@ class MyApp extends ConsumerWidget {
               width: 1.5,
             ),
           ),
-          hintStyle: const TextStyle(color: AppColors.hintText),
+          hintStyle: AppTextStyles.size16Regular(color: AppColors.hintText),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -85,11 +81,7 @@ class MyApp extends ConsumerWidget {
               borderRadius: BorderRadius.circular(30),
             ),
             padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 32),
-            textStyle: const TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
-              letterSpacing: 1.0,
-            ),
+            textStyle: AppTextStyles.size16Bold(letterSpacing: 1.0),
           ),
         ),
         textButtonTheme: TextButtonThemeData(

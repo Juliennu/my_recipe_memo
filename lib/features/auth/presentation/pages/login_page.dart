@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/login_controller.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
@@ -65,22 +66,16 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   color: AppColors.primary,
                 ),
                 const SizedBox(height: 24),
-                const Text(
+                Text(
                   'Recipe Memo',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.text,
-                    letterSpacing: 1.5,
-                  ),
+                  style: AppTextStyles.size28SemiBold(letterSpacing: 1.5),
                   textAlign: TextAlign.center,
                 ),
                 const SizedBox(height: 8),
                 Text(
                   'お気に入りのレシピを、\n自分だけのメモに。',
-                  style: TextStyle(
-                    fontSize: 14,
-                    color: Colors.grey[600],
+                  style: AppTextStyles.size14Regular(
+                    color: Colors.grey[600]!,
                     height: 1.5,
                   ),
                   textAlign: TextAlign.center,
@@ -141,7 +136,8 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Text(
                         'または',
-                        style: TextStyle(fontSize: 12, color: Colors.grey[400]),
+                        style: AppTextStyles.size12Regular(
+                            color: Colors.grey[400]!),
                       ),
                     ),
                     const Expanded(child: Divider()),

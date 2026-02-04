@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 
 class RecipeListEmptyView extends StatelessWidget {
   const RecipeListEmptyView({super.key});
@@ -16,9 +17,9 @@ class RecipeListEmptyView extends StatelessWidget {
             color: AppColors.disabled,
           ),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             'レシピが見つかりません',
-            style: TextStyle(color: AppColors.textDisabled),
+            style: AppTextStyles.size14Regular(color: AppColors.textDisabled),
           ),
           const SizedBox(height: 120), // 少し上に表示するために下部にスペースを追加
         ],

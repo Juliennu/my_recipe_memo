@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
+import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 
 class AppCancelButton extends StatelessWidget {
   final String text;
@@ -25,10 +26,7 @@ class AppCancelButton extends StatelessWidget {
         ),
         child: Text(
           text,
-          style: const TextStyle(
-            color: AppColors.textSecondary,
-            fontWeight: FontWeight.bold,
-          ),
+          style: AppTextStyles.size14Bold(color: AppColors.textSecondary),
         ),
       ),
     );
