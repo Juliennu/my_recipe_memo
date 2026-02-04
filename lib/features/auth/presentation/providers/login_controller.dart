@@ -36,9 +36,12 @@ class LoginController extends _$LoginController {
   }
 
   Future<void> signOut() async {
+    final authRepository = ref.read(authRepositoryProvider);
     state = const AsyncLoading();
-    state = await AsyncValue.guard(() async {
-      await ref.read(authRepositoryProvider).signOut();
-    });
+    try {
+      await authRepository.signOut();
+    } catch (e, st) {
+      state = AsyncValue.error(e, st);
+    }
   }
 }
