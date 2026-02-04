@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_recipe_memo/core/widgets/app_cancel_button.dart';
 import 'package:my_recipe_memo/core/widgets/app_primary_button.dart';
+import 'package:my_recipe_memo/core/widgets/app_snackbar.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/auth_providers.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/login_controller.dart';
 
@@ -139,16 +140,12 @@ class _LinkAccountPageState extends ConsumerState<LinkAccountPage>
           final message = currentTab == AuthTabType.signIn
               ? 'ログインしました'
               : 'アカウントを連携しました';
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(message)));
+          AppSnackBar.show(context, message);
           context.pop(); // 設定画面に戻る
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('エラーが発生しました: $e')));
+          AppSnackBar.show(context, 'エラーが発生しました: $e', isError: true);
         }
       }
     }
@@ -162,9 +159,7 @@ class _LinkAccountPageState extends ConsumerState<LinkAccountPage>
 
     ref.listen(loginControllerProvider, (_, state) {
       if (state.hasError) {
-        ScaffoldMessenger.of(
-          context,
-        ).showSnackBar(SnackBar(content: Text('エラーが発生しました: ${state.error}')));
+        AppSnackBar.show(context, 'エラーが発生しました: ${state.error}', isError: true);
       }
     });
 
