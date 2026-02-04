@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:my_recipe_memo/features/recipe/data/recipe_repository.dart';
+import 'package:my_recipe_memo/features/recipe/domain/recipe.dart';
 
 class AddRecipePage extends ConsumerStatefulWidget {
   const AddRecipePage({super.key});
@@ -14,6 +16,7 @@ class _AddRecipePageState extends ConsumerState<AddRecipePage> {
   final _urlController = TextEditingController();
   final _nameController = TextEditingController();
   final _categoryController = TextEditingController();
+  bool _isLoading = false;
 
   @override
   void dispose() {
@@ -23,13 +26,41 @@ class _AddRecipePageState extends ConsumerState<AddRecipePage> {
     super.dispose();
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Firebaseへの保存処理
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('レシピを保存しました')));
-      context.pop();
+      setState(() {
+        _isLoading = true;
+      });
+
+      try {
+        final recipe = Recipe(
+          title: _nameController.text,
+          url: _urlController.text,
+          category: _categoryController.text,
+          createdAt: DateTime.now(),
+        );
+
+        await ref.read(recipeRepositoryProvider).addRecipe(recipe);
+
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(const SnackBar(content: Text('レシピを保存しました')));
+          context.pop();
+        }
+      } catch (e) {
+        if (mounted) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text('保存に失敗しました: $e')));
+        }
+      } finally {
+        if (mounted) {
+          setState(() {
+            _isLoading = false;
+          });
+        }
+      }
     }
   }
 
@@ -97,14 +128,26 @@ class _AddRecipePageState extends ConsumerState<AddRecipePage> {
               ),
               const SizedBox(height: 32),
               FilledButton(
-                onPressed: _submit,
+                onPressed: _isLoading ? null : _submit,
                 style: FilledButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 16),
                 ),
-                child: const Text(
-                  '保存する',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                ),
+                child: _isLoading
+                    ? const SizedBox(
+                        width: 24,
+                        height: 24,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : const Text(
+                        '保存する',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
               ),
             ],
           ),
