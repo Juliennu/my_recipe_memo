@@ -256,31 +256,39 @@ class _ApplyButtonState extends State<_ApplyButton> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: AppPrimaryButton(
-        text: '適用',
-        isLoading: _isApplying,
-        onPressed: _isApplying
-            ? null
-            : () async {
-                setState(() => _isApplying = true);
-                widget.ref
-                    .read(recipeFilterStateProvider.notifier)
-                    .setFilter(
-                      RecipeFilter(
-                        categories: widget.selectedCategory.value,
-                        sortOrder: widget.sortOrder.value,
-                      ),
+    return ValueListenableBuilder<List<RecipeCategory>>(
+      valueListenable: widget.selectedCategory,
+      builder: (context, categories, _) {
+        final canApply = categories.isNotEmpty && !_isApplying;
+        return SizedBox(
+          width: double.infinity,
+          child: AppPrimaryButton(
+            text: '適用',
+            isLoading: _isApplying,
+            onPressed: canApply
+                ? () async {
+                    setState(() => _isApplying = true);
+                    widget.ref
+                        .read(recipeFilterStateProvider.notifier)
+                        .setFilter(
+                          RecipeFilter(
+                            categories: categories,
+                            sortOrder: widget.sortOrder.value,
+                          ),
+                        );
+                    widget.ref
+                        .read(recipeFilterStateProvider.notifier)
+                        .saveCurrentWithGeneratedName();
+                    await Future<void>.delayed(
+                      const Duration(milliseconds: 200),
                     );
-                widget.ref
-                    .read(recipeFilterStateProvider.notifier)
-                    .saveCurrentWithGeneratedName();
-                await Future<void>.delayed(const Duration(milliseconds: 200));
-                if (!context.mounted) return;
-                Navigator.of(context).pop();
-              },
-      ),
+                    if (!context.mounted) return;
+                    Navigator.of(context).pop();
+                  }
+                : null,
+          ),
+        );
+      },
     );
   }
 }
