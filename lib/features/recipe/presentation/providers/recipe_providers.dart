@@ -158,8 +158,9 @@ Future<List<Recipe>> filteredRecipes(Ref ref) async {
 
   // カテゴリ絞り込み
   if (filter.categories.isNotEmpty) {
+    final categorySet = filter.categories.toSet();
     working = working
-        .where((r) => filter.categories.contains(r.category))
+        .where((r) => categorySet.contains(r.category))
         .toList(growable: false);
   }
 

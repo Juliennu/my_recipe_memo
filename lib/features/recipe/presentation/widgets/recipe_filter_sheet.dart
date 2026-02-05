@@ -213,7 +213,9 @@ class _PresetSection extends StatelessWidget {
         LayoutBuilder(
           builder: (context, constraints) {
             const spacing = 8.0;
-            final itemWidth = (constraints.maxWidth - spacing) / 2; // 2列固定
+            // 2列固定
+            const columnCount = 2;
+            final itemWidth = (constraints.maxWidth - spacing) / columnCount;
             return Align(
               alignment: Alignment.centerLeft,
               child: Wrap(
@@ -316,7 +318,7 @@ class _FilterChipTile extends StatelessWidget {
       selected: selected,
       onSelected: onSelected,
       showCheckmark: false,
-      backgroundColor: Colors.white,
+      backgroundColor: AppColors.white,
       selectedColor: AppColors.primary.withValues(alpha: 0.16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
