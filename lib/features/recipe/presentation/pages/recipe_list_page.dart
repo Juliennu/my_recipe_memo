@@ -10,12 +10,29 @@ import 'package:my_recipe_memo/features/recipe/presentation/widgets/recipe_card.
 import 'package:my_recipe_memo/features/recipe/presentation/widgets/recipe_list_empty_view.dart';
 import 'package:my_recipe_memo/features/recipe/presentation/widgets/recipe_search_field.dart';
 
-class RecipeListPage extends ConsumerWidget {
+class RecipeListPage extends ConsumerStatefulWidget {
   const RecipeListPage({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<RecipeListPage> createState() => _RecipeListPageState();
+}
+
+class _RecipeListPageState extends ConsumerState<RecipeListPage> {
+  bool _wasCurrent = true;
+
+  @override
+  Widget build(BuildContext context) {
     final recipesAsync = ref.watch(filteredRecipesProvider);
+
+    final isCurrent = ModalRoute.of(context)?.isCurrent ?? true;
+    if (isCurrent && !_wasCurrent) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          FocusScope.of(context).unfocus();
+        }
+      });
+    }
+    _wasCurrent = isCurrent;
 
     return Scaffold(
       appBar: AppBar(
@@ -139,6 +156,7 @@ class RecipeListPage extends ConsumerWidget {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
+          FocusScope.of(context).unfocus(); // 検索バーのフォーカスを外す
           context.push('/add');
         },
         backgroundColor: AppColors.text,
