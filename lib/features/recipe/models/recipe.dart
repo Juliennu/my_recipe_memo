@@ -47,6 +47,7 @@ abstract class Recipe with _$Recipe {
     required String url,
     @RecipeCategoryConverter() required RecipeCategory category,
     @TimestampConverter() required DateTime createdAt,
+    @Default(false) bool isFavorite,
   }) = _Recipe;
 
   factory Recipe.fromJson(Map<String, dynamic> json) => _$RecipeFromJson(json);
