@@ -125,9 +125,13 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
                     mainAxisExtent: 260,
                   ),
                   delegate: SliverChildBuilderDelegate(
-                    (context, index) =>
-                        RecipeCard(recipe: categoryRecipes[index]),
+                    (context, index) => RecipeCard(
+                      key: ValueKey(categoryRecipes[index].id ?? index),
+                      recipe: categoryRecipes[index],
+                    ),
                     childCount: categoryRecipes.length,
+                    addRepaintBoundaries: true,
+                    addAutomaticKeepAlives: true,
                   ),
                 ),
               ),

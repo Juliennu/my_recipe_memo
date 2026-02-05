@@ -34,7 +34,9 @@ class RecipeRepository {
       throw Exception('User not logged in');
     }
     await _recipesCollection.add(
-      recipe.copyWith(userId: user.uid).toJsonForFirestore(),
+      recipe
+          .copyWith(userId: user.uid, isFavorite: recipe.isFavorite)
+          .toJsonForFirestore(),
     );
   }
 
@@ -69,5 +71,18 @@ class RecipeRepository {
             return Recipe.fromJson(data).copyWith(id: doc.id);
           }).toList();
         });
+  }
+
+  Future<void> updateFavorite({
+    required String recipeId,
+    required bool isFavorite,
+  }) async {
+    final user = _auth.currentUser;
+    if (user == null) return;
+
+    await _recipesCollection.doc(recipeId).update({
+      'isFavorite': isFavorite,
+      'userId': user.uid,
+    });
   }
 }

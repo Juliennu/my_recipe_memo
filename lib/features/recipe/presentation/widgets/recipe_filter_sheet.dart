@@ -18,6 +18,7 @@ void showRecipeFilterSheet(
     List.of(initialCategories),
   );
   final sortOrder = ValueNotifier<SortOrder>(currentFilter.sortOrder);
+  final favoritesOnly = ValueNotifier<bool>(currentFilter.favoritesOnly);
 
   showModalBottomSheet(
     context: context,
@@ -39,7 +40,10 @@ void showRecipeFilterSheet(
               ref: ref,
               selectedCategory: selectedCategory,
               sortOrder: sortOrder,
+              favoritesOnly: favoritesOnly,
             ),
+            const SizedBox(height: 12),
+            _FavoriteSection(favoritesOnly: favoritesOnly),
             const SizedBox(height: 12),
             _CategorySection(selectedCategory: selectedCategory),
             const SizedBox(height: 12),
@@ -48,11 +52,13 @@ void showRecipeFilterSheet(
               presets: presets,
               selectedCategory: selectedCategory,
               sortOrder: sortOrder,
+              favoritesOnly: favoritesOnly,
             ),
             const SizedBox(height: 20),
             _ApplyButton(
               selectedCategory: selectedCategory,
               sortOrder: sortOrder,
+              favoritesOnly: favoritesOnly,
               ref: ref,
             ),
             const SizedBox(height: 20),
@@ -68,11 +74,13 @@ class _SheetHeader extends StatelessWidget {
     required this.ref,
     required this.selectedCategory,
     required this.sortOrder,
+    required this.favoritesOnly,
   });
 
   final WidgetRef ref;
   final ValueNotifier<List<RecipeCategory>> selectedCategory;
   final ValueNotifier<SortOrder> sortOrder;
+  final ValueNotifier<bool> favoritesOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -94,8 +102,35 @@ class _SheetHeader extends StatelessWidget {
           onPressed: () {
             selectedCategory.value = List.of(RecipeCategory.values);
             sortOrder.value = SortOrder.newestFirst;
+            favoritesOnly.value = false;
           },
           child: const Text('リセット'),
+        ),
+      ],
+    );
+  }
+}
+
+class _FavoriteSection extends StatelessWidget {
+  const _FavoriteSection({required this.favoritesOnly});
+
+  final ValueNotifier<bool> favoritesOnly;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text('お気に入りのみ', style: Theme.of(context).textTheme.labelLarge),
+        ValueListenableBuilder<bool>(
+          valueListenable: favoritesOnly,
+          builder: (context, value, _) {
+            return Switch.adaptive(
+              value: value,
+              activeTrackColor: AppColors.primary,
+              onChanged: (v) => favoritesOnly.value = v,
+            );
+          },
         ),
       ],
     );
@@ -192,11 +227,13 @@ class _PresetSection extends StatelessWidget {
     required this.presets,
     required this.selectedCategory,
     required this.sortOrder,
+    required this.favoritesOnly,
   });
 
   final List<SavedFilter> presets;
   final ValueNotifier<List<RecipeCategory>> selectedCategory;
   final ValueNotifier<SortOrder> sortOrder;
+  final ValueNotifier<bool> favoritesOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -233,6 +270,7 @@ class _PresetSection extends StatelessWidget {
                               : p.filter.categories;
                           selectedCategory.value = List.of(presetCategories);
                           sortOrder.value = p.filter.sortOrder;
+                          favoritesOnly.value = p.filter.favoritesOnly;
                         },
                       ),
                     ),
@@ -250,11 +288,13 @@ class _ApplyButton extends StatefulWidget {
   const _ApplyButton({
     required this.selectedCategory,
     required this.sortOrder,
+    required this.favoritesOnly,
     required this.ref,
   });
 
   final ValueNotifier<List<RecipeCategory>> selectedCategory;
   final ValueNotifier<SortOrder> sortOrder;
+  final ValueNotifier<bool> favoritesOnly;
   final WidgetRef ref;
 
   @override
@@ -269,7 +309,7 @@ class _ApplyButtonState extends State<_ApplyButton> {
     return ValueListenableBuilder<List<RecipeCategory>>(
       valueListenable: widget.selectedCategory,
       builder: (context, categories, _) {
-        final canApply = categories.isNotEmpty && !_isApplying;
+        final canApply = !_isApplying;
         return SizedBox(
           width: double.infinity,
           child: AppPrimaryButton(
@@ -284,6 +324,7 @@ class _ApplyButtonState extends State<_ApplyButton> {
                           RecipeFilter(
                             categories: categories,
                             sortOrder: widget.sortOrder.value,
+                            favoritesOnly: widget.favoritesOnly.value,
                           ),
                         );
                     widget.ref

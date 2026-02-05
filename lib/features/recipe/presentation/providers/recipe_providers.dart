@@ -17,18 +17,22 @@ class RecipeFilter {
   const RecipeFilter({
     this.categories = const [],
     this.sortOrder = SortOrder.newestFirst,
+    this.favoritesOnly = false,
   });
 
   final List<RecipeCategory> categories; // 空なら全カテゴリ
   final SortOrder sortOrder;
+  final bool favoritesOnly;
 
   RecipeFilter copyWith({
     List<RecipeCategory>? categories,
     SortOrder? sortOrder,
+    bool? favoritesOnly,
   }) {
     return RecipeFilter(
       categories: categories ?? this.categories,
       sortOrder: sortOrder ?? this.sortOrder,
+      favoritesOnly: favoritesOnly ?? this.favoritesOnly,
     );
   }
 }
@@ -42,6 +46,7 @@ class SavedFilter {
     'name': name,
     'categories': filter.categories.map((c) => c.title).toList(),
     'sortOrder': filter.sortOrder.name,
+    'favoritesOnly': filter.favoritesOnly,
   };
 
   factory SavedFilter.fromJson(Map<String, dynamic> json) {
@@ -56,9 +61,14 @@ class SavedFilter {
       (e) => e.name == sortOrderString,
       orElse: () => SortOrder.newestFirst,
     );
+    final favoritesOnly = json['favoritesOnly'] as bool? ?? false;
     return SavedFilter(
       name: json['name'] as String,
-      filter: RecipeFilter(categories: categories, sortOrder: sortOrder),
+      filter: RecipeFilter(
+        categories: categories,
+        sortOrder: sortOrder,
+        favoritesOnly: favoritesOnly,
+      ),
     );
   }
 }
@@ -73,6 +83,37 @@ Stream<List<Recipe>> recipes(Ref ref) {
   }
 
   return ref.watch(recipeRepositoryProvider).watchRecipes();
+}
+
+@riverpod
+class FavoriteOverrides extends _$FavoriteOverrides {
+  @override
+  Map<String, bool> build() => const {};
+
+  void set(String recipeId, bool isFavorite) {
+    state = {...state, recipeId: isFavorite};
+  }
+
+  void remove(String recipeId) {
+    final next = {...state}..remove(recipeId);
+    state = next;
+  }
+}
+
+@riverpod
+Future<List<Recipe>> effectiveRecipes(Ref ref) async {
+  final recipes = await ref.watch(recipesProvider.future);
+  final overrides = ref.watch(favoriteOverridesProvider);
+
+  return recipes
+      .map(
+        (recipe) => recipe.id == null
+            ? recipe
+            : recipe.copyWith(
+                isFavorite: overrides[recipe.id!] ?? recipe.isFavorite,
+              ),
+      )
+      .toList(growable: false);
 }
 
 @riverpod
@@ -149,7 +190,7 @@ class RecipeFilterState extends _$RecipeFilterState {
 
 @riverpod
 Future<List<Recipe>> filteredRecipes(Ref ref) async {
-  final recipes = await ref.watch(recipesProvider.future);
+  final recipes = await ref.watch(effectiveRecipesProvider.future);
   final query = ref.watch(searchQueryProvider);
   final filterState = ref.watch(recipeFilterStateProvider);
   final filter = filterState.$1;
@@ -173,6 +214,11 @@ Future<List<Recipe>> filteredRecipes(Ref ref) async {
         .toList(growable: false);
   }
 
+  // お気に入りのみ
+  if (filter.favoritesOnly) {
+    working = working.where((r) => r.isFavorite).toList(growable: false);
+  }
+
   // 並び替え
   working.sort((a, b) {
     final compare = a.createdAt.compareTo(b.createdAt);
@@ -180,4 +226,58 @@ Future<List<Recipe>> filteredRecipes(Ref ref) async {
   });
 
   return working;
+}
+
+@riverpod
+class FavoriteController extends _$FavoriteController {
+  static const _remoteSyncTimeout = Duration(seconds: 8);
+
+  @override
+  void build() {}
+
+  Future<void> toggleFavorite(Recipe recipe) async {
+    final recipeId = recipe.id;
+    if (recipeId == null) {
+      return;
+    }
+
+    final overridesNotifier = ref.read(favoriteOverridesProvider.notifier);
+    final overrides = ref.read(favoriteOverridesProvider);
+    final current = overrides[recipeId] ?? recipe.isFavorite;
+    final toggled = !current;
+
+    overridesNotifier.set(recipeId, toggled);
+
+    try {
+      await ref
+          .read(recipeRepositoryProvider)
+          .updateFavorite(recipeId: recipeId, isFavorite: toggled);
+      await _waitRemoteSync(recipeId, toggled);
+    } catch (_) {
+      overridesNotifier.set(recipeId, current);
+    }
+  }
+
+  Future<void> _waitRemoteSync(String recipeId, bool expected) async {
+    final stream = ref.read(recipeRepositoryProvider).watchRecipes();
+    try {
+      await stream
+          .firstWhere((recipes) {
+            Recipe? matched;
+            for (final recipe in recipes) {
+              if (recipe.id == recipeId) {
+                matched = recipe;
+                break;
+              }
+            }
+            return matched?.isFavorite == expected;
+          })
+          .timeout(_remoteSyncTimeout);
+      ref.read(favoriteOverridesProvider.notifier).remove(recipeId);
+    } on TimeoutException {
+      // リモートが遅延しても UI を優先
+    } catch (_) {
+      // 無視してローカルの状態を保持
+    }
+  }
 }

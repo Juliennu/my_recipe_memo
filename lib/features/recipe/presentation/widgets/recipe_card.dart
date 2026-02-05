@@ -1,20 +1,51 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:metadata_fetch/metadata_fetch.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
 import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
 import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:metadata_fetch/metadata_fetch.dart';
+import 'package:my_recipe_memo/features/recipe/presentation/providers/recipe_providers.dart';
 
-class RecipeCard extends StatelessWidget {
+class RecipeCard extends ConsumerStatefulWidget {
   const RecipeCard({super.key, required this.recipe});
 
   final Recipe recipe;
 
   @override
+  ConsumerState<RecipeCard> createState() => _RecipeCardState();
+}
+
+class _RecipeCardState extends ConsumerState<RecipeCard>
+    with AutomaticKeepAliveClientMixin {
+  late Future<Metadata?> _metadataFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _metadataFuture = MetadataFetch.extract(widget.recipe.url);
+  }
+
+  @override
+  void didUpdateWidget(covariant RecipeCard oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.recipe.url != widget.recipe.url) {
+      _metadataFuture = MetadataFetch.extract(widget.recipe.url);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
+    final overrides = ref.watch(favoriteOverridesProvider);
+    final recipeId = widget.recipe.id;
+    final isFavorite = recipeId == null
+        ? widget.recipe.isFavorite
+        : overrides[recipeId] ?? widget.recipe.isFavorite;
+
     return FutureBuilder<Metadata?>(
-      future: MetadataFetch.extract(recipe.url),
+      future: _metadataFuture,
       builder: (context, snapshot) {
         final meta = snapshot.data;
         final imageUrl = meta?.image;
@@ -39,7 +70,10 @@ class RecipeCard extends StatelessWidget {
               onTap: () {
                 context.push(
                   '/webview',
-                  extra: {'url': recipe.url, 'title': recipe.title},
+                  extra: {
+                    'url': widget.recipe.url,
+                    'title': widget.recipe.title,
+                  },
                 );
               },
               child: Column(
@@ -47,25 +81,45 @@ class RecipeCard extends StatelessWidget {
                 children: [
                   _Thumbnail(imageUrl: imageUrl),
                   Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 8,
+                      vertical: 16,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             Expanded(
                               child: Text(
-                                recipe.title,
+                                widget.recipe.title,
                                 style: AppTextStyles.size16Bold(height: 1.3),
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                            const Icon(
-                              Icons.open_in_new_rounded,
-                              size: 18,
-                              color: AppColors.primary,
+                            IconButton(
+                              visualDensity: VisualDensity.compact,
+                              iconSize: 28,
+                              splashRadius: 28,
+                              onPressed: widget.recipe.id == null
+                                  ? null
+                                  : () {
+                                      ref
+                                          .read(
+                                            favoriteControllerProvider.notifier,
+                                          )
+                                          .toggleFavorite(widget.recipe);
+                                    },
+                              icon: Icon(
+                                isFavorite
+                                    ? Icons.favorite
+                                    : Icons.favorite_border,
+                                color: isFavorite
+                                    ? AppColors.primary
+                                    : AppColors.textSecondary,
+                              ),
                             ),
                           ],
                         ),
@@ -91,6 +145,9 @@ class RecipeCard extends StatelessWidget {
       },
     );
   }
+
+  @override
+  bool get wantKeepAlive => true;
 }
 
 class _Thumbnail extends StatelessWidget {
@@ -136,11 +193,7 @@ class _Thumbnail extends StatelessWidget {
                 strokeWidth: 2,
                 color: AppColors.primary,
               )
-            : const Icon(
-                Icons.photo,
-                color: AppColors.textSecondary,
-                size: 32,
-              ),
+            : const Icon(Icons.photo, color: AppColors.textSecondary, size: 32),
       ),
     );
   }

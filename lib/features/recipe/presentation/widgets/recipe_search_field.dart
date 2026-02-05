@@ -19,7 +19,8 @@ class RecipeSearchField extends ConsumerWidget {
     ).containsAll(RecipeCategory.values);
     final isDefaultFilter =
         (currentFilter.categories.isEmpty || hasAllCategories) &&
-        currentFilter.sortOrder == SortOrder.newestFirst;
+        currentFilter.sortOrder == SortOrder.newestFirst &&
+        !currentFilter.favoritesOnly;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
