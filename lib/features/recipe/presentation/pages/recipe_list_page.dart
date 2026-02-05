@@ -46,114 +46,104 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          const RecipeSearchField(),
-          Expanded(
-            child: recipesAsync.when(
-              data: (recipes) {
-                if (recipes.isEmpty) {
-                  return const RecipeListEmptyView();
-                }
+      body: recipesAsync.when(
+        data: (recipes) {
+          if (recipes.isEmpty) {
+            return const RecipeListEmptyView();
+          }
 
-                // グループ化
-                final groupedRecipes = <RecipeCategory, List<Recipe>>{};
-                for (final recipe in recipes) {
-                  groupedRecipes
-                      .putIfAbsent(recipe.category, () => [])
-                      .add(recipe);
-                }
+          final groupedRecipes = <RecipeCategory, List<Recipe>>{};
+          for (final recipe in recipes) {
+            groupedRecipes.putIfAbsent(recipe.category, () => []).add(recipe);
+          }
 
-                // リストアイテムの作成
-                final listItems = <dynamic>[];
-                for (final category in RecipeCategory.values) {
-                  final categoryRecipes = groupedRecipes[category];
-                  if (categoryRecipes != null && categoryRecipes.isNotEmpty) {
-                    listItems.add(category.title);
-                    listItems.add(categoryRecipes);
-                  }
-                }
+          final slivers = <Widget>[
+            const SliverToBoxAdapter(child: RecipeSearchField()),
+            const SliverPadding(padding: EdgeInsets.only(top: 8)),
+          ];
 
-                return ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(
-                    20,
-                    0,
-                    20,
-                    120, // FAB と被らないよう余白を確保
-                  ),
-                  itemCount: listItems.length,
-                  itemBuilder: (context, index) {
-                    final item = listItems[index];
-                    if (item is String) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
+          for (final category in RecipeCategory.values) {
+            final categoryRecipes = groupedRecipes[category];
+            if (categoryRecipes == null || categoryRecipes.isEmpty) continue;
+
+            slivers.add(
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 12,
+                ),
+                sliver: SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: AppColors.primary.withValues(alpha: 0.25),
+                        width: 1,
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: 6,
+                          height: 28,
                           decoration: BoxDecoration(
-                            color: AppColors.surface,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: AppColors.primary.withValues(alpha: 0.25),
-                              width: 1,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Container(
-                                width: 6,
-                                height: 28,
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary,
-                                  borderRadius: BorderRadius.circular(999),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Text(
-                                item,
-                                style: AppTextStyles.size16Bold(
-                                  color: AppColors.text,
-                                ),
-                              ),
-                            ],
+                            color: AppColors.primary,
+                            borderRadius: BorderRadius.circular(999),
                           ),
                         ),
-                      );
-                    } else if (item is Recipe) {
-                      // 単体のレシピ項目はここでは扱わない
-                      return const SizedBox.shrink();
-                    } else if (item is List<Recipe>) {
-                      return GridView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              mainAxisSpacing: 16,
-                              crossAxisSpacing: 16,
-                              // 各カードの高さを固定してレイアウト崩れを防ぐ
-                              mainAxisExtent: 260,
-                            ),
-                        itemCount: item.length,
-                        itemBuilder: (context, i) =>
-                            RecipeCard(recipe: item[i]),
-                      );
-                    }
-                    return const SizedBox.shrink();
-                  },
-                );
-              },
-              error: (error, stack) =>
-                  Center(child: Text('エラーが発生しました: $error')),
-              loading: () => const Center(
-                child: CircularProgressIndicator(color: AppColors.primary),
+                        const SizedBox(width: 12),
+                        Text(
+                          category.title,
+                          style: AppTextStyles.size16Bold(
+                            color: AppColors.text,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ),
-        ],
+            );
+
+            slivers.add(
+              SliverPadding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                  vertical: 4,
+                ),
+                sliver: SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 16,
+                    crossAxisSpacing: 16,
+                    mainAxisExtent: 260,
+                  ),
+                  delegate: SliverChildBuilderDelegate(
+                    (context, index) =>
+                        RecipeCard(recipe: categoryRecipes[index]),
+                    childCount: categoryRecipes.length,
+                  ),
+                ),
+              ),
+            );
+          }
+
+          slivers.add(
+            const SliverPadding(padding: EdgeInsets.only(bottom: 120)),
+          );
+
+          return CustomScrollView(slivers: slivers);
+        },
+        error: (error, stack) => Center(child: Text('エラーが発生しました: $error')),
+        loading: () => const Center(
+          child: CircularProgressIndicator(color: AppColors.primary),
+        ),
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
