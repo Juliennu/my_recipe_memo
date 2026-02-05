@@ -134,7 +134,8 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
                               crossAxisCount: 2,
                               mainAxisSpacing: 16,
                               crossAxisSpacing: 16,
-                              childAspectRatio: 0.72,
+                              // 各カードの高さを固定してレイアウト崩れを防ぐ
+                              mainAxisExtent: 260,
                             ),
                         itemCount: item.length,
                         itemBuilder: (context, i) =>
@@ -159,12 +160,12 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
           FocusScope.of(context).unfocus(); // 検索バーのフォーカスを外す
           context.push('/add');
         },
-        backgroundColor: AppColors.text,
+        backgroundColor: AppColors.primary,
         elevation: 4,
-        icon: const Icon(Icons.add_rounded, color: Colors.white),
+        icon: const Icon(Icons.add_rounded, color: AppColors.white),
         label: Text(
           'レシピを追加',
-          style: AppTextStyles.size14Bold(color: Colors.white),
+          style: AppTextStyles.size14Bold(color: AppColors.white),
         ),
       ),
     );
