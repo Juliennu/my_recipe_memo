@@ -170,7 +170,6 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
 class _SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
   _SearchBarHeaderDelegate({required this.child});
 
-  static const double _height = 64;
   final Widget child;
 
   @override
@@ -183,17 +182,17 @@ class _SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
       elevation: overlapsContent ? 2 : 0,
       color: Theme.of(context).scaffoldBackgroundColor,
       child: SizedBox(
-        height: _height,
+        height: RecipeSearchField.height,
         child: SafeArea(top: false, bottom: false, child: child),
       ),
     );
   }
 
   @override
-  double get maxExtent => _height;
+  double get maxExtent => RecipeSearchField.height;
 
   @override
-  double get minExtent => _height;
+  double get minExtent => RecipeSearchField.height;
 
   @override
   bool shouldRebuild(covariant _SearchBarHeaderDelegate oldDelegate) {
