@@ -131,10 +131,9 @@ mobile platforms.
   the UI needs to change, Flutter rebuilds the widget tree.
 * **Composition:** Prefer composing smaller widgets over extending existing
   ones. Use this to avoid deep widget nesting.
-* **Private Widgets:** Use small, private `Widget` classes instead of private
-  helper methods that return a `Widget`.
+* **Private Widgets:** Use small, private `Widget` classes or builder methods instead of large `build` methods.
 * **Build Methods:** Break down large `build()` methods into smaller, reusable
-  private Widget classes.
+  private Widget classes or builder methods to keep code concise and maintainable.
 * **List Performance:** Use `ListView.builder` or `SliverList` for long lists to
   create lazy-loaded lists for performance.
 * **Isolates:** Use `compute()` to run expensive calculations in a separate

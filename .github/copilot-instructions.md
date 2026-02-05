@@ -16,4 +16,7 @@ mobile platforms.
 * At the end of your response, list the terminal commands you executed for visibility.
 
 ## Markdown Formatting
-- リストにはハイフン（-）を使ってね。
+- リストにはハイフン（-）を使ってください。
+
+## Code Style
+- コード内に `// 追加` や `// 変更` などのメタコメントを含めないでください。変更内容はdiffやコンテキストから自明であるべきです。
