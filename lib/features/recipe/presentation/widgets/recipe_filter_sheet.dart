@@ -93,9 +93,6 @@ class _SheetHeader extends StatelessWidget {
           onPressed: () {
             selectedCategory.value = List.of(RecipeCategory.values);
             sortOrder.value = SortOrder.newestFirst;
-            ref
-                .read(recipeFilterStateProvider.notifier)
-                .setFilter(const RecipeFilter());
           },
           child: const Text('リセット'),
         ),
