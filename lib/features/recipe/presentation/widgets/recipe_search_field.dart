@@ -9,10 +9,10 @@ class RecipeSearchField extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 16, 20, 0),
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
       child: TextField(
         decoration: InputDecoration(
-          hintText: 'レシピを検索',
+          hintText: 'レシピ名を検索',
           prefixIcon: const Icon(Icons.search, color: AppColors.text),
           filled: true,
           fillColor: Colors.white,

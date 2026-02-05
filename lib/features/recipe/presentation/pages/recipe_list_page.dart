@@ -53,27 +53,75 @@ class RecipeListPage extends ConsumerWidget {
                   final categoryRecipes = groupedRecipes[category];
                   if (categoryRecipes != null && categoryRecipes.isNotEmpty) {
                     listItems.add(category.title);
-                    listItems.addAll(categoryRecipes);
+                    listItems.add(categoryRecipes);
                   }
                 }
 
                 return ListView.builder(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
+                  padding: const EdgeInsets.fromLTRB(
+                    20,
+                    0,
+                    20,
+                    120, // FAB と被らないよう余白を確保
                   ),
                   itemCount: listItems.length,
                   itemBuilder: (context, index) {
                     final item = listItems[index];
                     if (item is String) {
                       return Padding(
-                        padding: const EdgeInsets.only(top: 24, bottom: 8),
-                        child: Text(item, style: AppTextStyles.size16Bold()),
+                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppColors.surface,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: AppColors.primary.withValues(alpha: 0.25),
+                              width: 1,
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Container(
+                                width: 6,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primary,
+                                  borderRadius: BorderRadius.circular(999),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+                              Text(
+                                item,
+                                style: AppTextStyles.size16Bold(
+                                  color: AppColors.text,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       );
                     } else if (item is Recipe) {
-                      return Padding(
-                        padding: const EdgeInsets.only(bottom: 16),
-                        child: RecipeCard(recipe: item),
+                      // 単体のレシピ項目はここでは扱わない
+                      return const SizedBox.shrink();
+                    } else if (item is List<Recipe>) {
+                      return GridView.builder(
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              mainAxisSpacing: 16,
+                              crossAxisSpacing: 16,
+                              childAspectRatio: 0.72,
+                            ),
+                        itemCount: item.length,
+                        itemBuilder: (context, i) =>
+                            RecipeCard(recipe: item[i]),
                       );
                     }
                     return const SizedBox.shrink();

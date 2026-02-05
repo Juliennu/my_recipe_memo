@@ -14,7 +14,7 @@ enum RecipeCategory {
       .soup => '汁物',
       .salad => 'サラダ',
       .dessert => 'デザート',
-      .snack => 'つまみ',
+      .snack => 'おつまみ',
       .other => 'その他',
     };
   }
