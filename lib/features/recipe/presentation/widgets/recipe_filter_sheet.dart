@@ -273,7 +273,7 @@ class _ApplyButtonState extends State<_ApplyButton> {
         return SizedBox(
           width: double.infinity,
           child: AppPrimaryButton(
-            text: '適用',
+            text: 'OK',
             isLoading: _isApplying,
             onPressed: canApply
                 ? () async {
