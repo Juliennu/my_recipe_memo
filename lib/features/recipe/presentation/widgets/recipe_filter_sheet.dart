@@ -23,6 +23,7 @@ void showRecipeFilterSheet(
     context: context,
     showDragHandle: true,
     isScrollControlled: true,
+    backgroundColor: Colors.white,
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
     ),
@@ -318,6 +319,7 @@ class _FilterChipTile extends StatelessWidget {
       selected: selected,
       onSelected: onSelected,
       showCheckmark: false,
+      backgroundColor: Colors.white,
       selectedColor: AppColors.primary.withValues(alpha: 0.16),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
