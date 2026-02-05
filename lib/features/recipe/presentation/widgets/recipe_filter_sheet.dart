@@ -287,9 +287,6 @@ class _ApplyButtonState extends State<_ApplyButton> {
                     widget.ref
                         .read(recipeFilterStateProvider.notifier)
                         .saveCurrentWithGeneratedName();
-                    await Future<void>.delayed(
-                      const Duration(milliseconds: 200),
-                    );
                     if (!context.mounted) return;
                     Navigator.of(context).pop();
                   }
