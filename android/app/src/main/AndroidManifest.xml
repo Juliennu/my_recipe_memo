@@ -11,7 +11,7 @@
     </queries>
 
     <application
-        android:label="my_recipe_memo"
+        android:label="レシピブクマ"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
