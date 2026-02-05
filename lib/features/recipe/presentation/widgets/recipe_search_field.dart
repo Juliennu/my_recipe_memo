@@ -8,6 +8,8 @@ import 'package:my_recipe_memo/features/recipe/presentation/widgets/recipe_filte
 class RecipeSearchField extends ConsumerWidget {
   const RecipeSearchField({super.key});
 
+  static const double height = 64;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final filterState = ref.watch(recipeFilterStateProvider);

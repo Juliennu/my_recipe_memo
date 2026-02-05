@@ -58,7 +58,12 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
           }
 
           final slivers = <Widget>[
-            const SliverToBoxAdapter(child: RecipeSearchField()),
+            SliverPersistentHeader(
+              pinned: true,
+              delegate: _SearchBarHeaderDelegate(
+                child: const RecipeSearchField(),
+              ),
+            ),
             const SliverPadding(padding: EdgeInsets.only(top: 8)),
           ];
 
@@ -159,5 +164,38 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
         ),
       ),
     );
+  }
+}
+
+class _SearchBarHeaderDelegate extends SliverPersistentHeaderDelegate {
+  _SearchBarHeaderDelegate({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(
+    BuildContext context,
+    double shrinkOffset,
+    bool overlapsContent,
+  ) {
+    return Material(
+      elevation: overlapsContent ? 2 : 0,
+      color: Theme.of(context).scaffoldBackgroundColor,
+      child: SizedBox(
+        height: RecipeSearchField.height,
+        child: SafeArea(top: false, bottom: false, child: child),
+      ),
+    );
+  }
+
+  @override
+  double get maxExtent => RecipeSearchField.height;
+
+  @override
+  double get minExtent => RecipeSearchField.height;
+
+  @override
+  bool shouldRebuild(covariant _SearchBarHeaderDelegate oldDelegate) {
+    return oldDelegate.child != child;
   }
 }
