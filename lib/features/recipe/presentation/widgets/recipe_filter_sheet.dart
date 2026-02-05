@@ -80,6 +80,16 @@ class _SheetHeader extends StatelessWidget {
         Text('フィルター', style: Theme.of(context).textTheme.titleMedium),
         const Spacer(),
         TextButton(
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(24),
+              side: BorderSide(
+                color: AppColors.textSecondary.withValues(alpha: 0.6),
+                width: 1,
+              ),
+            ),
+          ),
           onPressed: () {
             selectedCategory.value = List.of(RecipeCategory.values);
             sortOrder.value = SortOrder.newestFirst;
