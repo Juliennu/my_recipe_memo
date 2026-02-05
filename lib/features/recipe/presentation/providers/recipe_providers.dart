@@ -107,10 +107,9 @@ class RecipeFilterState extends _$RecipeFilterState {
   void savePreset(String name) {
     final currentFilter = state.$1;
     final presets = [...state.$2];
-    // 既存同名を置き換え、最大5件まで
     presets.removeWhere((p) => p.name == name);
     presets.insert(0, SavedFilter(name: name, filter: currentFilter));
-    if (presets.length > 6) {
+    if (presets.length > RecipeConstants.maxFilterPresets) {
       presets.removeLast();
     }
     state = (currentFilter, presets);
