@@ -36,11 +36,17 @@ Future<List<Recipe>> filteredRecipes(Ref ref) async {
   final recipes = await ref.watch(recipesProvider.future);
   final query = ref.watch(searchQueryProvider);
 
+  // 追加日の降順でソート（新しいレシピが先頭）
+  final sorted = [...recipes]
+    ..sort(
+      (a, b) => b.createdAt.compareTo(a.createdAt),
+    );
+
   if (query.isEmpty) {
-    return recipes;
+    return sorted;
   }
 
-  return recipes
+  return sorted
       .where(
         (recipe) => recipe.title.toLowerCase().contains(query.toLowerCase()),
       )
