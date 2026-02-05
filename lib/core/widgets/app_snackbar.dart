@@ -9,6 +9,7 @@ class AppSnackBar {
     String message, {
     bool isError = false,
     ScaffoldMessengerState? messenger,
+    SnackBarBehavior behavior = .fixed,
   }) {
     final scaffoldMessenger =
         messenger ?? (context != null ? ScaffoldMessenger.of(context) : null);
@@ -26,9 +27,8 @@ class AppSnackBar {
           textAlign: TextAlign.center,
         ),
         backgroundColor: isError ? AppColors.alert : AppColors.text,
-        behavior: SnackBarBehavior.floating,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-        margin: const EdgeInsets.all(16),
+        behavior: behavior,
+        shape: RoundedRectangleBorder(borderRadius: .circular(16)),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         elevation: 0,
       ),

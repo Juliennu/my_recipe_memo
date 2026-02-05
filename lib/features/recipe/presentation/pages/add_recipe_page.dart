@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
 import 'package:my_recipe_memo/core/widgets/app_primary_button.dart';
+import 'package:my_recipe_memo/core/widgets/app_snackbar.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/auth_providers.dart';
 import 'package:my_recipe_memo/features/recipe/data/recipe_repository.dart';
 import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
@@ -52,16 +53,16 @@ class _AddRecipePageState extends ConsumerState<AddRecipePage> {
         await ref.read(recipeRepositoryProvider).addRecipe(recipe);
 
         if (mounted) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(const SnackBar(content: Text('レシピを保存しました')));
+          AppSnackBar.show(context, 'レシピを保存しました');
           context.pop();
         }
       } catch (e) {
         if (mounted) {
-          ScaffoldMessenger.of(
+          AppSnackBar.show(
             context,
-          ).showSnackBar(SnackBar(content: Text('保存に失敗しました: $e')));
+            '保存に失敗しました: $e',
+            isError: true,
+          );
         }
       } finally {
         if (mounted) {
