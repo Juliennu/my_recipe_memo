@@ -48,10 +48,6 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
       ),
       body: recipesAsync.when(
         data: (recipes) {
-          if (recipes.isEmpty) {
-            return const RecipeListEmptyView();
-          }
-
           final groupedRecipes = <RecipeCategory, List<Recipe>>{};
           for (final recipe in recipes) {
             groupedRecipes.putIfAbsent(recipe.category, () => []).add(recipe);
@@ -66,6 +62,16 @@ class _RecipeListPageState extends ConsumerState<RecipeListPage> {
             ),
             const SliverPadding(padding: EdgeInsets.only(top: 8)),
           ];
+
+          if (recipes.isEmpty) {
+            slivers.add(
+              const SliverFillRemaining(
+                hasScrollBody: false,
+                child: RecipeListEmptyView(),
+              ),
+            );
+            return CustomScrollView(slivers: slivers);
+          }
 
           for (final category in RecipeCategory.values) {
             final categoryRecipes = groupedRecipes[category];
