@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:my_recipe_memo/core/theme/app_colors.dart';
 import 'package:my_recipe_memo/core/theme/app_text_styles.dart';
+import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
+import 'package:my_recipe_memo/features/recipe/models/recipe_category.dart';
 import 'package:my_recipe_memo/features/recipe/presentation/providers/recipe_providers.dart';
 import 'package:my_recipe_memo/features/recipe/presentation/widgets/recipe_card.dart';
 import 'package:my_recipe_memo/features/recipe/presentation/widgets/recipe_list_empty_view.dart';
@@ -36,14 +38,45 @@ class RecipeListPage extends ConsumerWidget {
                 if (recipes.isEmpty) {
                   return const RecipeListEmptyView();
                 }
-                return ListView.separated(
-                  padding: const EdgeInsets.all(20),
-                  itemCount: recipes.length,
-                  separatorBuilder: (context, index) =>
-                      const SizedBox(height: 16),
+
+                // グループ化
+                final groupedRecipes = <RecipeCategory, List<Recipe>>{};
+                for (final recipe in recipes) {
+                  groupedRecipes
+                      .putIfAbsent(recipe.category, () => [])
+                      .add(recipe);
+                }
+
+                // リストアイテムの作成
+                final listItems = <dynamic>[];
+                for (final category in RecipeCategory.values) {
+                  final categoryRecipes = groupedRecipes[category];
+                  if (categoryRecipes != null && categoryRecipes.isNotEmpty) {
+                    listItems.add(category.title);
+                    listItems.addAll(categoryRecipes);
+                  }
+                }
+
+                return ListView.builder(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 20,
+                  ),
+                  itemCount: listItems.length,
                   itemBuilder: (context, index) {
-                    final recipe = recipes[index];
-                    return RecipeCard(recipe: recipe);
+                    final item = listItems[index];
+                    if (item is String) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 24, bottom: 8),
+                        child: Text(item, style: AppTextStyles.size16Bold()),
+                      );
+                    } else if (item is Recipe) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 16),
+                        child: RecipeCard(recipe: item),
+                      );
+                    }
+                    return const SizedBox.shrink();
                   },
                 );
               },

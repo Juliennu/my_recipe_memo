@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:my_recipe_memo/features/recipe/models/recipe_category.dart';
 
 part 'recipe.freezed.dart';
 part 'recipe.g.dart';
@@ -18,6 +19,23 @@ class TimestampConverter implements JsonConverter<DateTime, Timestamp> {
   }
 }
 
+class RecipeCategoryConverter implements JsonConverter<RecipeCategory, String> {
+  const RecipeCategoryConverter();
+
+  @override
+  RecipeCategory fromJson(String json) {
+    return RecipeCategory.values.firstWhere(
+      (e) => e.title == json,
+      orElse: () => RecipeCategory.other,
+    );
+  }
+
+  @override
+  String toJson(RecipeCategory object) {
+    return object.title;
+  }
+}
+
 @freezed
 abstract class Recipe with _$Recipe {
   const Recipe._();
@@ -27,7 +45,7 @@ abstract class Recipe with _$Recipe {
     required String userId,
     required String title,
     required String url,
-    required String category,
+    @RecipeCategoryConverter() required RecipeCategory category,
     @TimestampConverter() required DateTime createdAt,
   }) = _Recipe;
 

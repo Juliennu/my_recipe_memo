@@ -17,4 +17,7 @@ class AppColors {
   static const Color alert = Color(0xFFE57373); // 注意・警告用（トーンを合わせた赤）
   static const Color disabled = Color(0xFFE0E0E0); // Colors.grey[300]
   static const Color textDisabled = Color(0xFF9E9E9E); // Colors.grey[500]
+
+  // Shadows
+  static const Color cardShadow = Color(0x33000000); // 20% black
 }

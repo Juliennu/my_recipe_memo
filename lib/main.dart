@@ -63,6 +63,14 @@ class MyApp extends ConsumerWidget {
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
           ),
+          errorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: const BorderSide(color: AppColors.alert, width: 1.5),
+          ),
+          focusedErrorBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(30),
+            borderSide: const BorderSide(color: AppColors.alert, width: 1.5),
+          ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: const BorderSide(
@@ -91,8 +99,9 @@ class MyApp extends ConsumerWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-          elevation: 0, // フラットに
-          color: Colors.white,
+          elevation: 12, // しっかり浮かせる
+          shadowColor: AppColors.cardShadow,
+          color: AppColors.white,
           margin: EdgeInsets.zero,
         ),
       ),

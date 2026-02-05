@@ -65,9 +65,10 @@ class RecipeCard extends StatelessWidget {
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
-                    recipe.category,
-                    style: AppTextStyles.size12Regular(color: AppColors.primary)
-                        .copyWith(fontWeight: FontWeight.w600),
+                    recipe.category.title,
+                    style: AppTextStyles.size12Regular(
+                      color: AppColors.primary,
+                    ).copyWith(fontWeight: FontWeight.w600),
                   ),
                 ),
               ],

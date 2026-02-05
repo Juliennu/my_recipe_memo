@@ -26,7 +26,7 @@ class AppPrimaryButton extends StatelessWidget {
           backgroundColor: isDestructive ? AppColors.alert : AppColors.primary,
           foregroundColor: AppColors.white,
           elevation: 0,
-          padding: const EdgeInsets.symmetric(vertical: 12),
+          padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 24),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(100),
           ),
@@ -42,7 +42,7 @@ class AppPrimaryButton extends StatelessWidget {
               )
             : Text(
                 text,
-                style: AppTextStyles.size14Bold(color: AppColors.white),
+                style: AppTextStyles.size16Bold(color: AppColors.white),
               ),
       ),
     );
