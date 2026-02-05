@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:my_recipe_memo/core/constants/app_constants.dart';
 import 'package:my_recipe_memo/features/auth/presentation/providers/auth_providers.dart';
 import 'package:my_recipe_memo/features/recipe/data/recipe_repository.dart';
 import 'package:my_recipe_memo/features/recipe/models/recipe.dart';
@@ -38,10 +39,10 @@ class SavedFilter {
   final RecipeFilter filter;
 
   Map<String, dynamic> toJson() => {
-        'name': name,
-        'categories': filter.categories.map((c) => c.title).toList(),
-        'sortOrder': filter.sortOrder.name,
-      };
+    'name': name,
+    'categories': filter.categories.map((c) => c.title).toList(),
+    'sortOrder': filter.sortOrder.name,
+  };
 
   factory SavedFilter.fromJson(Map<String, dynamic> json) {
     final categoryTitles = (json['categories'] as List<dynamic>? ?? [])
@@ -57,10 +58,7 @@ class SavedFilter {
     );
     return SavedFilter(
       name: json['name'] as String,
-      filter: RecipeFilter(
-        categories: categories,
-        sortOrder: sortOrder,
-      ),
+      filter: RecipeFilter(categories: categories, sortOrder: sortOrder),
     );
   }
 }
@@ -130,8 +128,9 @@ class RecipeFilterState extends _$RecipeFilterState {
 
   Future<void> _persistPresets(List<SavedFilter> presets) async {
     final prefs = await SharedPreferences.getInstance();
-    final encoded =
-        presets.map((p) => jsonEncode(p.toJson())).toList(growable: false);
+    final encoded = presets
+        .map((p) => jsonEncode(p.toJson()))
+        .toList(growable: false);
     await prefs.setStringList(_prefsKey, encoded);
   }
 
