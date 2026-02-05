@@ -9,17 +9,19 @@ class AppPrimaryButton extends StatelessWidget {
     required this.onPressed,
     this.isDestructive = false,
     this.isLoading = false,
+    this.width = double.infinity,
   });
 
   final String text;
   final VoidCallback? onPressed;
   final bool isDestructive;
   final bool isLoading;
+  final double width;
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: double.infinity,
+      width: width,
       child: ElevatedButton(
         onPressed: isLoading ? null : onPressed,
         style: ElevatedButton.styleFrom(
