@@ -47,27 +47,18 @@ class RecipeCard extends StatelessWidget {
                 children: [
                   _Thumbnail(imageUrl: imageUrl),
                   Padding(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 12,
+                      vertical: 12,
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              child: Text(
-                                recipe.title,
-                                style: AppTextStyles.size16Bold(height: 1.3),
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                            const Icon(
-                              Icons.open_in_new_rounded,
-                              size: 18,
-                              color: AppColors.primary,
-                            ),
-                          ],
+                        Text(
+                          recipe.title,
+                          style: AppTextStyles.size16Bold(height: 1.3),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         if (metaTitle != null && metaTitle.isNotEmpty) ...[
                           const SizedBox(height: 8),
