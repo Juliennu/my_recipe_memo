@@ -23,6 +23,18 @@
   dart pub global activate fvm
   ```
 
+- [Firebase CLI](https://firebase.google.com/docs/cli) のインストール
+
+  ```bash
+  brew install firebase-cli
+  ```
+
+- [FlutterFire CLI](https://firebase.flutter.dev/docs/cli/) のインストール
+
+   ```bash
+   dart pub global activate flutterfire_cli
+   ```
+
 - VS Code (推奨)
   - Dart / Flutter 拡張機能
   - 設定ファイル (`.vscode/settings.json`) はリポジトリに含まれており、FVMのSDKを自動認識するように設定されています。
@@ -53,13 +65,7 @@
    firebase login
    ```
 
-   b. FlutterFire CLI をインストール (初回のみ):
-
-   ```bash
-   dart pub global activate flutterfire_cli
-   ```
-
-   c. Firebase設定ファイルを生成:
+   b. Firebase設定ファイルを生成:
 
    ```bash
    dart pub global run flutterfire_cli:flutterfire configure --project=my-recipe-memo
