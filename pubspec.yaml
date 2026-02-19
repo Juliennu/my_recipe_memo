@@ -73,6 +73,7 @@ dev_dependencies:
   riverpod_lint: ^3.1.0
   json_serializable: ^6.11.2
   flutter_native_splash: ^2.4.2
+  flutter_launcher_icons: ^0.14.2
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -95,6 +96,15 @@ flutter_native_splash:
     color: "#FFE9E3"
     color_dark: "#FFE9E3"
     image: assets/images/splash_logo.png
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  min_sdk_android: 21
+  image_path_android: assets/icons/app_icon_foreground.png
+  adaptive_icon_background: "#FFE9E3"
+  adaptive_icon_foreground: assets/icons/app_icon_foreground.png
+  image_path_ios: assets/icons/app_icon_ios.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:
